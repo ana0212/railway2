@@ -1,3 +1,4 @@
+import os
 import joblib
 import json
 import pickle
@@ -8,12 +9,13 @@ from peewee import (
     FloatField, TextField, IntegrityError
 )
 from playhouse.shortcuts import model_to_dict
+from playhouse.db_url import connect
 
 
 ########################################
 # Begin database stuff
 
-DB = SqliteDatabase('predictions.db')
+DB = connect(os.environ.get('DATABASE_URL') or 'sqlite:///predictions.db')
 
 
 class Prediction(Model):
