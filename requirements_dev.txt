@@ -1,0 +1,10 @@
+nbgrader==0.8.4
+matplotlib==3.7.2
+pandas==2.1.0 
+scikit-learn==1.4.1.post1
+
+Flask==3.0.2
+peewee==3.17.1
+psycopg2-binary==2.9.9
+gunicorn==21.2.0
+
