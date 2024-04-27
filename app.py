@@ -84,12 +84,12 @@ def predict():
     observation_id = request_data.get("observation_id", None)
     if observation_id is None:
         response["error"] = "Missing observation_id"
-        return jsonify(response), 400
+        return jsonify(response)
     
     data = request_data.get("data", None)
     if data is None:
         response["error"] = "Missing 'data' field in request"
-        return jsonify(response), 400
+        return jsonify(response)
 
     # Check if all required fields are present
     required_fields = ['age', 'sex', 'race', 'workclass', 'education', 'marital-status',
@@ -97,13 +97,13 @@ def predict():
     missing_fields = [field for field in required_fields if field not in data]
     if missing_fields:
         response["error"] = f"Missing fields: {', '.join(missing_fields)}"
-        return jsonify(response), 400
+        return jsonify(response)
 
     # Check for extra fields
     extra_fields = [field for field in data if field not in required_fields]
     if extra_fields:
         response["error"] = f"Extra fields: {', '.join(extra_fields)}"
-        return jsonify(response), 400
+        return jsonify(response)
 
     # Validate categorical features
     valid_categories = {
@@ -117,7 +117,7 @@ def predict():
     for feature, valid_values in valid_categories.items():
         if feature in data and data[feature] not in valid_values:
             response["error"] = f"Invalid value '{data[feature]}' for '{feature}'"
-            return jsonify(response), 400
+            return jsonify(response)
 
     # Validate numerical features
     numerical_features = {'age': (0, 100), 'capital-gain': (0, 99999), 'capital-loss': (0, 99999), 'hours-per-week': (0, 168)}  # Based on observed values
@@ -126,7 +126,7 @@ def predict():
             error_message = validate_numerical_field(data[feature], feature, min_value, max_value)
             if error_message:
                 response["error"] = error_message
-                return jsonify(response), 400
+                return jsonify(response)
 
     # Perform prediction if request is properly structured
     try:
@@ -144,10 +144,10 @@ def predict():
             "prediction": prediction_label,
             "probability": probability
         }
-        return jsonify(response), 200
+        return jsonify(response)
     except Exception as e:
         response["error"] = str(e)
-        return jsonify(response), 500
+        return jsonify(response)
 
 @app.route('/update', methods=['POST'])
 def update():
